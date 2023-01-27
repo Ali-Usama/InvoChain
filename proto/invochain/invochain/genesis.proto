@@ -1,0 +1,14 @@
+syntax = "proto3";
+package invochain.invochain;
+
+import "gogoproto/gogo.proto";
+import "invochain/invochain/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "invochain/x/invochain/types";
+
+// GenesisState defines the invochain module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}
