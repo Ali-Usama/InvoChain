@@ -22,6 +22,10 @@ export interface InvochainQueryParamsResponse {
   params?: InvochainParams;
 }
 
+export interface InvochainQuerySayHelloResponse {
+  name?: string;
+}
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -169,6 +173,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<InvochainQueryParamsResponse, RpcStatus>({
       path: `/invochain/invochain/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySayHello
+   * @summary Queries a list of SayHello items.
+   * @request GET:/invochain/invochain/say_hello/{name}
+   */
+  querySayHello = (name: string, params: RequestParams = {}) =>
+    this.request<InvochainQuerySayHelloResponse, RpcStatus>({
+      path: `/invochain/invochain/say_hello/${name}`,
       method: "GET",
       format: "json",
       ...params,

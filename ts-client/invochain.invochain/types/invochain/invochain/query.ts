@@ -14,6 +14,14 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
+export interface QuerySayHelloRequest {
+  name: string;
+}
+
+export interface QuerySayHelloResponse {
+  name: string;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -102,10 +110,106 @@ export const QueryParamsResponse = {
   },
 };
 
+function createBaseQuerySayHelloRequest(): QuerySayHelloRequest {
+  return { name: "" };
+}
+
+export const QuerySayHelloRequest = {
+  encode(message: QuerySayHelloRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySayHelloRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySayHelloRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QuerySayHelloRequest {
+    return { name: isSet(object.name) ? String(object.name) : "" };
+  },
+
+  toJSON(message: QuerySayHelloRequest): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySayHelloRequest>, I>>(object: I): QuerySayHelloRequest {
+    const message = createBaseQuerySayHelloRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseQuerySayHelloResponse(): QuerySayHelloResponse {
+  return { name: "" };
+}
+
+export const QuerySayHelloResponse = {
+  encode(message: QuerySayHelloResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySayHelloResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySayHelloResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QuerySayHelloResponse {
+    return { name: isSet(object.name) ? String(object.name) : "" };
+  },
+
+  toJSON(message: QuerySayHelloResponse): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QuerySayHelloResponse>, I>>(object: I): QuerySayHelloResponse {
+    const message = createBaseQuerySayHelloResponse();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Queries a list of SayHello items. */
+  SayHello(request: QuerySayHelloRequest): Promise<QuerySayHelloResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -113,11 +217,18 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
+    this.SayHello = this.SayHello.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("invochain.invochain.Query", "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
+  }
+
+  SayHello(request: QuerySayHelloRequest): Promise<QuerySayHelloResponse> {
+    const data = QuerySayHelloRequest.encode(request).finish();
+    const promise = this.rpc.request("invochain.invochain.Query", "SayHello", data);
+    return promise.then((data) => QuerySayHelloResponse.decode(new _m0.Reader(data)));
   }
 }
 
