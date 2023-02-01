@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "invochain/invochain/params.proto";
+import "invochain/invochain/post.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "invochain/x/invochain/types";
@@ -18,6 +19,16 @@ service Query {
   // Queries a list of SayHello items.
 	rpc SayHello(QuerySayHelloRequest) returns (QuerySayHelloResponse) {
 		option (google.api.http).get = "/invochain/invochain/say_hello/{name}";
+	}
+
+// Queries a Post by id.
+	rpc Post(QueryGetPostRequest) returns (QueryGetPostResponse) {
+		option (google.api.http).get = "/invochain/invochain/post/{id}";
+	}
+
+	// Queries a list of Post items.
+	rpc PostAll(QueryAllPostRequest) returns (QueryAllPostResponse) {
+		option (google.api.http).get = "/invochain/invochain/post";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -38,6 +49,23 @@ message QuerySayHelloRequest {
 
 message QuerySayHelloResponse {
   string name = 1;
+}
+
+message QueryGetPostRequest {
+	uint64 id = 1;
+}
+
+message QueryGetPostResponse {
+	Post Post = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPostRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPostResponse {
+	repeated Post Post = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

@@ -3,6 +3,7 @@ package invochain.invochain;
 
 import "gogoproto/gogo.proto";
 import "invochain/invochain/params.proto";
+import "invochain/invochain/post.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "invochain/x/invochain/types";
@@ -10,5 +11,7 @@ option go_package = "invochain/x/invochain/types";
 // GenesisState defines the invochain module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Post postList = 2 [(gogoproto.nullable) = false];
+  uint64 postCount = 3;
   // this line is used by starport scaffolding # genesis/proto/state
 }
